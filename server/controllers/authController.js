@@ -15,9 +15,9 @@ exports.requestVerification=async(req,res,next)=>{
 
 
         let user=await User.findOne({email});
-        if(user?.isVerified){
-            return res.status(400).json({success:false, message:"email is already registred"})
-        }
+        // if(user?.isVerified){
+        //     return res.status(400).json({success:false, message:"email is already registred"})
+        // }
 
         const token=crypto.randomBytes(32).toString('hex');
         const expiry=new Date(Date.now() + 15*60*1000);
@@ -47,7 +47,7 @@ exports.requestVerification=async(req,res,next)=>{
 
 exports.verifyEmail=async(req,res,next)=>{
     try{
-        const token=req.query;
+        const token=req.query.token;
         if(!token) return res.status(400).json({success:false, message:"token missing"});
 
         const user=await User.findOne({
@@ -102,5 +102,5 @@ exports.completeProfile=async(req,res,next)=>{
 
 
 exports.getMe = async (req, res) => {
-  res.json({ success: true, user: req.user });
+  res.json({ success: true, user: req.User });
 };
